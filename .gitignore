@@ -7,6 +7,8 @@
 node_modules/
 dist/
 build/
+package-lock.json
+npm-debug.log*
 
 # Editor / OS
 .vscode/
