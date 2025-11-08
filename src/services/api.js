@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-// Use Vite environment variable for API base URL when provided.
-// On Vercel set VITE_API_BASE to your backend URL (for example: https://api.example.com/api)
-// Fallback to a relative '/api' which works if you proxy requests or deploy backend under same domain.
-const baseURL = import.meta.env.VITE_API_BASE || '/api';
+// API base URL configuration
+// Development: Use local backend server on port 8000
+// Production: Use environment variable VITE_API_BASE set in Vercel
+const baseURL = import.meta.env.VITE_API_BASE || 
+                (import.meta.env.DEV ? 'http://localhost:8000/api' : '/api');
 
 const api = axios.create({
   baseURL,
