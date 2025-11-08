@@ -315,10 +315,50 @@ The recommendation engine uses multiple factors:
 3. Set up Cloudinary and Razorpay accounts
 4. Deploy with `npm start`
 
-### **Frontend Deployment (Vercel/Netlify)**
-1. Update API base URL in `src/services/api.js`
-2. Build project: `npm run build`
-3. Deploy `dist` folder
+### **Frontend Deployment (Vercel)**
+
+Recommended approach: deploy the frontend separately to Vercel and the backend to a server / platform (Railway, Render, Heroku, or similar). Set the frontend to call your backend via an environment variable.
+
+1. In your Vercel project settings add an environment variable:
+
+   - `VITE_API_BASE` = `https://your-backend.example.com/api`
+
+   Notes:
+   - Use the full backend URL including `/api` (for example `https://api.mysite.com/api`).
+   - Add this variable for the appropriate environment (Preview/Production).
+
+2. Ensure your backend is deployed and CORS allows requests from your Vercel domain.
+
+3. Configure Vercel (the repository already contains `vercel.json` in the `frontend/` folder). The static build settings will output into `dist`.
+
+4. Build & Deploy
+
+   Vercel automatically runs the build. Locally you can verify the production build with:
+
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+5. If you prefer to proxy API requests through Vercel (optional):
+
+   - You can add rewrites in the Vercel dashboard or a `vercel.json` with explicit upstreams, however the simplest and recommended approach is to set `VITE_API_BASE` to the backend URL and let the browser call the API directly.
+
+6. Frontend runtime
+
+   The frontend reads the API base URL at build time from `import.meta.env.VITE_API_BASE`. If it is not set, it falls back to a relative `/api` path.
+
+### Additional notes
+
+- If you use `Vite` preview locally (to validate production build):
+
+  ```bash
+  npm run build
+  npm run preview
+  ```
+
+- Make sure sensitive keys (Razorpay secret keys, Cloudinary secret) remain on the backend — never embed them into the frontend environment.
+
 
 ### **Database Setup (MongoDB Atlas)**
 1. Create MongoDB Atlas cluster

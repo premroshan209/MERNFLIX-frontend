@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// Use Vite environment variable for API base URL when provided.
+// On Vercel set VITE_API_BASE to your backend URL (for example: https://api.example.com/api)
+// Fallback to a relative '/api' which works if you proxy requests or deploy backend under same domain.
+const baseURL = import.meta.env.VITE_API_BASE || '/api';
+
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json'
   }
